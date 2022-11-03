@@ -3,7 +3,8 @@ import "./App.css";
 import axios from "axios";
 import { Posts } from "./components/Posts/Post";
 
-const api = "http://146.190.215.239:3333/movies";
+const apiRemote = "https://146.190.215.239:3334/movies";
+const apiLocal = "http://localhost:3333/movies";
 
 interface propsitens {
   description: string;
@@ -25,7 +26,7 @@ export default function App() {
   console.log(itens);
 
   useEffect(() => {
-    axios(api).then((response) => {
+    axios(apiRemote).then((response) => {
       setItens(response.data);
     });
   }, []);
@@ -57,7 +58,11 @@ export default function App() {
           return (
             <button
               value={index}
-              onClick={(e) => setCurrentePage(Number(e.target.value))}
+              onClick={(e) =>
+                setCurrentePage(
+                  Number((e.currentTarget as HTMLInputElement).value)
+                )
+              }
             >
               {index + 1}
             </button>
