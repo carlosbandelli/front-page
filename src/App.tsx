@@ -14,22 +14,29 @@ interface propsitens {
   producer: string;
   title: string;
 }
+
 export default function App() {
   const [itens, setItens] = useState<propsitens[]>([]);
   const [itensPerPage, setItensPerPage] = useState(10);
   const [currentPage, setCurrentePage] = useState(0);
 
-  const pages = Math.ceil(itens.length / itensPerPage);
-  const startIndex = currentPage * itensPerPage;
-  const endIndex = startIndex + itensPerPage;
-  const currentItens = itens.slice(startIndex, endIndex);
-  console.log(itens);
-
   useEffect(() => {
+    if (location.protocol !== "https:") {
+      axios(apiRemote).then((response) => {
+        setItens(response.data);
+      });
+    }
     axios(apiRemote).then((response) => {
       setItens(response.data);
     });
   }, []);
+
+  console.log(setItens);
+
+  const pages = Math.ceil(itens.length / itensPerPage);
+  const startIndex = currentPage * itensPerPage;
+  const endIndex = startIndex + itensPerPage;
+  const currentItens = itens.slice(startIndex, endIndex);
 
   const shuffleList = (list: any[]) => list.sort(() => Math.random() - 0.5);
   const handleShuffle = () => {
